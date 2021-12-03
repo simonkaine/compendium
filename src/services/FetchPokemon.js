@@ -22,7 +22,13 @@ export const fetchPoke = async () => {
             return jsonified.results[0];
         })
     );
-    console.log("FETCHED 10 Pokemon....", fetched10List);
-    return fetched10List;
+    return fetched10List; // pass
+}
+
+export const fetchAllPokemonTypes = async () => {
+    const types = await fetch(`https://pokedex-alchemy.herokuapp.com/api/pokedex/types`);
+    const jsonTypes = await types.json()
+    console.log('TYPES....', jsonTypes);
+    return jsonTypes; // pass
 }
 

@@ -2,10 +2,12 @@ export default function PokemonDetails({ pokemon }) {
     return (
         <figure aria-label='indvidualPokemon'>
             <div style={{
-                height: 300,
-                width: 300,
+                height: 150,
+                width: 150,
                 backgroundSize: 'cover',
-                backgroundRepeat: 'no-repeat'
+                backgroundRepeat: 'no-repeat',
+                display: 'flex',
+                flexDirection: 'column'
             }}>
                 <img src={pokemon.url_image} alt="pokemon"></img>
                 <h1>Name: {pokemon.pokemon}</h1>
