@@ -22,13 +22,21 @@ export const fetchPoke = async () => {
             return jsonified.results[0];
         })
     );
-    return fetched10List; // pass
+    return fetched10List; // console logged
 }
 
 export const fetchAllPokemonTypes = async () => {
     const types = await fetch(`https://pokedex-alchemy.herokuapp.com/api/pokedex/types`);
     const jsonTypes = await types.json()
-    console.log('TYPES....', jsonTypes);
-    return jsonTypes; // pass
+    return jsonTypes; // console logged
 }
+
+export const fetchSelectedTypes = async (type) => {
+    const typesResponse = await fetch(`https://pokedex-alchemy.herokuapp.com/api/pokedex?type=${type}`);
+    const jsonFilteredTypeData = await typesResponse.json();
+    console.log("FILTERED TYPES", jsonFilteredTypeData.results)
+    // const filteredPokemon = jsonFilteredTypeData.results.map((pokemon) => pokemon);
+    // return filteredPokemon;
+    return jsonFilteredTypeData.results;
+}   
 

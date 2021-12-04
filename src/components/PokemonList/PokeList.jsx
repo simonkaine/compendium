@@ -9,7 +9,7 @@ export default function PokeList({ pokeList }) {
         <ul aria-label='pokeList' style={{ margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center'}}> 
             {pokeList.map((indvPoke) => {
                 return (
-                    <li key={indvPoke.id}>
+                    <li className='indvPokemon' key={indvPoke.id}>
                         <PokemonDetails pokemon={indvPoke}/> 
                     </li>
                 )
