@@ -34,9 +34,13 @@ export const fetchAllPokemonTypes = async () => {
 export const fetchSelectedTypes = async (type) => {
     const typesResponse = await fetch(`https://pokedex-alchemy.herokuapp.com/api/pokedex?type=${type}`);
     const jsonFilteredTypeData = await typesResponse.json();
-    console.log("FILTERED TYPES", jsonFilteredTypeData.results)
-    // const filteredPokemon = jsonFilteredTypeData.results.map((pokemon) => pokemon);
-    // return filteredPokemon;
-    return jsonFilteredTypeData.results;
+    return jsonFilteredTypeData.results; // logged
 }   
+
+export const fetchSortedPokemon = async (sortOrder) => {
+    const sortResponse = await fetch(` https://pokedex-alchemy.herokuapp.com/api/pokedex?sort=defence&direction=${sortOrder}`);
+    const sortData = await sortResponse.json();
+    console.log('SORTED DATA: ', sortData.results)
+    return sortData.results; // logged 
+}
 

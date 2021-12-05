@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { fetchPoke, fetchAllPokemonTypes, fetchSelectedTypes } from '../../services/FetchPokemon';
+import { fetchPoke, fetchAllPokemonTypes, fetchSelectedTypes, fetchSortedPokemon } from '../../services/FetchPokemon';
 import PokeList from '../../components/PokemonList/PokeList';
 import pokeball from '../../assets/pokeball.png';
 import Controls from '../../components/Controllers/Controls';
@@ -12,7 +12,7 @@ export default function Compendium() {
     const [loadingState, setLoadingState] = useState(true);
     const [pokeTypes, setPokeTypes] = useState([]); // fetch and store types
     const [selectedPokemonType, setSelectedPokemonType] = useState('all'); // load at ALL intially
-    // const [sort, setSort] = useState('asc');
+    const [sort, setSort] = useState('asc');
 
     useEffect(() => {
         async function getAllPokemon() {
@@ -26,8 +26,6 @@ export default function Compendium() {
         getAllPokemon();
     }, []);
 
-    // useEffect to fetch types from services then store in an array
-    // Build fetch types function in services
     useEffect(() => {
         async function getAllPokeTypes() {
             const pokemonTypes = await fetchAllPokemonTypes();
@@ -36,10 +34,6 @@ export default function Compendium() {
         getAllPokeTypes()
     }, []);
 
-    // Build useEffect to utilize dependency array of types
-    // build fetched filtered types in services
-    // if all isnt selected, populate with chosen type
-    // else show intial load of pokemon
     useEffect(() => {
         async function runFilterOnPokemon() {
             if(!selectedPokemonType) return;
@@ -48,23 +42,46 @@ export default function Compendium() {
             if(selectedPokemonType !== 'all') {
                 const pokemonFiltered = await fetchSelectedTypes(selectedPokemonType);
                 setPokeDetails(pokemonFiltered)
-                console.log('NEW TYPES RENDERED: ',pokemonFiltered);
                 
             } else {
                 const pokemonTypesList = await fetchPoke();
                 setPokeDetails(pokemonTypesList);
             }
-            setLoadingState(false)
+            setTimeout(() => {
+                setLoadingState(false);
+            }, 500)
         }
         runFilterOnPokemon();
     }, [selectedPokemonType]);
     
+    useEffect(() => {
+        async function sortPokemon() {
+            if (!sort) return;
+                setLoadingState(true);
+
+            if(sort === 'desc') {
+                const fetchedSort = await fetchSortedPokemon(sort);
+                setPokeDetails(fetchedSort);
+            } else {
+                const pokemonList = await fetchPoke();
+                setPokeDetails(pokemonList);
+            }
+            setTimeout(() => {
+                setLoadingState(false);
+            }, 500)
+            setSort(sort);
+        }
+        sortPokemon();
+    }, [sort]);
+
     return (
         <div>
             <Controls 
                 pokeTypes={pokeTypes}
                 typeSelection={selectedPokemonType}
-                filterChange={setSelectedPokemonType} 
+                filterChange={setSelectedPokemonType}
+                sort={sort} 
+                setSortChange={setSort}
             /> 
             {loadingState ? (
             <>
